@@ -44,7 +44,7 @@ input, #saveBtn {
 }
 
 
-#noteInput, #saveBtn {
+#noteInput, #countInput, #saveBtn {
     padding: 6.5px;
     border-radius: 7px;
 }

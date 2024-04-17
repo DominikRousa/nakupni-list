@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const noteInput = document.getElementById("noteInput");
+    const countInput = document.getElementById("countInput");
     const saveNoteBtn = document.getElementById("saveBtn");
     const notesContainer = document.getElementById("notesContainer");
     
@@ -7,15 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
     
     saveNoteBtn.addEventListener("click", function () {
         const noteText = noteInput.value.trim();
+        const noteCount = countInput.value.trim();
         if (noteText !== "") {
-            saveNoteToLocalStorage(noteText);
+            saveNoteToLocalStorage(noteText, noteCount);
             noteInput.value = "";
         }
     });
     
-    function saveNoteToLocalStorage(text) {
+    function saveNoteToLocalStorage(text, count) {
         const timestamp = new Date().toLocaleString();
-        const note = { text: text, timestamp: timestamp };
+        const note = { text: text, count: count };
         let notes = JSON.parse(localStorage.getItem("notes")) || [];
         notes.push(note);
         localStorage.setItem("notes", JSON.stringify(notes));
@@ -30,13 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
             noteElement.classList.add("note");
             noteElement.innerHTML = `
                 <p>${note.text}</p>
-                <small>${note.timestamp}</small>
-                <button onclick="editNote(${index})">Edit</button>
-                <button onclick="deleteNote(${index})">Delete</button>
+                <p>Počet: ${note.count}</p>
+                <button onclick="checkNote(${index})">Dokonceno</button>
+                <button onclick="editNote(${index})">Upravit</button>
+                <button onclick="deleteNote(${index})">Odstranit</button>
             `;
             notesContainer.appendChild(noteElement);
         });
     }
+
+    window.checkNote = function (index) {
+        const notes = JSON.parse(localStorage.getItem("notes")) || [];
+        notes.style.backgroundColor = "green";
+    };
 
     window.editNote = function (index) {
         const notes = JSON.parse(localStorage.getItem("notes")) || [];
